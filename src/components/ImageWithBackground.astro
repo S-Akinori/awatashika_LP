@@ -1,0 +1,14 @@
+---
+// Astro component: ImageWithBackground.astro
+interface Props {
+  imageUrl: string;
+  altText: string;
+}
+const { imageUrl, altText } = Astro.props;
+---
+
+<div class="relative before:content-[''] 
+            before:block before:absolute before:-right-2 before:-bottom-2 before:w-full before:h-full before:bg-main
+">
+    <img src={imageUrl} alt={altText} class="relative" />
+</div>

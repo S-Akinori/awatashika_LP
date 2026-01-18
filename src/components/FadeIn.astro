@@ -1,0 +1,84 @@
+---
+// src/components/FadeIn.astro
+interface Props {
+  delay?: string;    // アニメーション開始の遅延（例: "0.2s"）
+  duration?: string; // アニメーションにかかる時間（例: "0.8s"）
+  distance?: string; // 浮き上がる距離/移動距離（例: "20px"）
+  direction?: "up" | "down" | "left" | "right"; // アニメーションの方向
+}
+
+const { 
+  delay = "0s", 
+  duration = "0.6s", 
+  distance = "20px",
+  direction = "up"
+} = Astro.props;
+
+let translateStyle = "";
+
+switch(direction) {
+  case "up":
+    translateStyle = `0, var(--distance)`;
+    break;
+  case "down":
+    translateStyle = `0, calc(var(--distance) * -1)`;
+    break;
+  case "left":
+    translateStyle = `var(--distance), 0`;
+    break;
+  case "right":
+    translateStyle = `calc(var(--distance) * -1), 0`;
+    break;
+  default:
+    translateStyle = `0, var(--distance)`;
+}
+---
+
+<div 
+  class="fade-in-container" 
+  style={`--delay: ${delay}; --duration: ${duration}; --distance: ${distance}; --fade-translate: ${translateStyle};`}
+>
+  <slot />
+</div>
+
+<style>
+  .fade-in-container {
+    /* 初期状態：透明でオフセット方向に配置 */
+    opacity: 0;
+    transform: translate(var(--fade-translate));
+    transition: 
+      opacity var(--duration) ease-out var(--delay),
+      transform var(--duration) ease-out var(--delay);
+    visibility: hidden;
+  }
+
+  /* 表示された時のクラス */
+  .fade-in-container.is-visible {
+    opacity: 1;
+    transform: translate(0,0);
+    visibility: visible;
+  }
+</style>
+
+<script>
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1 // 10%が見えたら実行
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        // 一度表示されたら監視を解除する場合
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  // 全ての対象要素を監視
+  document.querySelectorAll('.fade-in-container').forEach((el) => {
+    observer.observe(el);
+  });
+</script>

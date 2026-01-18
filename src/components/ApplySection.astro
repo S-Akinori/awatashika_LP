@@ -1,0 +1,22 @@
+---
+import FadeIn from "./FadeIn.astro";
+import Title from "./Title.astro";
+import { Button } from "./ui/button";
+
+const response = await fetch(import.meta.env.CMS_ENDPOINT+'?sheet=contact');
+const data = await response.json();
+const contact = data['contact']?.[0] || {};
+---
+
+<div id="apply">
+    <FadeIn direction="up" delay="0s">
+        <Title class="mb-8">{contact.title}</Title>
+    </FadeIn>
+    <div class="text-center mt-12">
+        <FadeIn direction="up" delay="0s">
+            <Button className="px-8 py-6 shadow-lg bg-accent text-accent-cont rounded-none w-full md:w-auto md:min-w-96 text-xl hover:bg-accent/80">
+                <a href={contact.link} target="_blank">{contact.link_text}</a>
+            </Button>
+        </FadeIn>
+    </div>
+</div>

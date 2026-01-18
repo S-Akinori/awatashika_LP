@@ -1,0 +1,92 @@
+---
+import FadeIn from "./FadeIn.astro";
+import Title from "./Title.astro";
+import { Button } from "./ui/button";
+import seminar1 from '../assets/seminar1.JPG';
+import seminar2 from '../assets/seminar2.JPG';
+import ImageWithBackground from "./ImageWithBackground.astro";
+
+interface Schedule {
+    title: string;
+    text: string;
+}
+
+interface DetailListItem {
+    title: string;
+    text: string;
+    image?: string;
+    altText?: string;
+}
+
+const response = await fetch(import.meta.env.CMS_ENDPOINT+'?sheet=detail,detail_schedules,detail_lists');
+const data = await response.json();
+const detail = data['detail']?.[0] || {};
+const detail_schedules: Schedule[] = data['detail_schedules'] || [];
+const detail_lists: DetailListItem[] = data['detail_lists'] || [];
+---
+
+<div id="detail" class="">
+    <FadeIn direction="up" delay="0s">
+        <Title class="mb-8">{detail.title}</Title>
+    </FadeIn>
+    <div class="border-l p-8 md:ml-28 border-main">
+        <div class="relative mb-12">
+            <FadeIn direction="up" delay="0.2s">
+                <p class="relative md:absolute top-0 md:-translate-x-full md:-left-16 after:content-[''] after:block after:absolute after:-left-12 md:after:left-auto md:after:-right-12 after:top-1/2 after:w-8 after:h-[1px] after:bg-main">開催日時</p>
+                <div class="md:flex">
+                    <div class="md:w-1/2">
+                        <div class="flex flex-wrap">
+                            {detail_schedules.map((schedule: Schedule, index: number) => (
+                                <div class="w-1/2 p-4 relative">
+                                    <div class="aspect-square bg-main text-main-cont text-xl flex justify-center items-center [clip-path:polygon(50%_0%,100%_50%,50%_100%,0%_50%)]">{schedule.title}</div>
+                                    <div class="mt-4 w-max mx-auto whitespace-pre-wrap">
+                                        {schedule.text}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <div class="text-center">両日 10:00 ~ 17:00</div>
+                    </div>
+                    <div class="md:w-1/2">
+                        <div class="p-4">
+                            
+                            <ImageWithBackground imageUrl={seminar1.src} altText="セミナーの様子" />
+                        </div>
+                        <div class="p-4">
+                            <ImageWithBackground imageUrl={seminar2.src} altText="セミナーの様子" />
+                        </div>
+                    </div>
+                </div>
+            </FadeIn>
+        </div>
+        {detail_lists.map((item: DetailListItem, index: number) => (
+            <div class="relative mb-12">
+                <FadeIn direction="up" delay="0.2s">
+                    <p class="relative md:absolute top-0 md:-translate-x-full md:-left-16 after:content-[''] after:block after:absolute after:-left-12 md:after:left-auto md:after:-right-12 after:top-1/2 after:w-8 after:h-[1px] after:bg-main">
+                        {item.title}
+                    </p>
+                    {!item.image && (
+                        <div class="md:w-1/2 whitespace-pre-wrap">{item.text}</div>
+                    )}
+                    {item.image && (
+                        <div class="md:flex">
+                            <div class="md:w-1/2 whitespace-pre-wrap">
+                                {item.text}
+                            </div>
+                            <div class="md:w-1/2">
+                                <ImageWithBackground imageUrl={item.image} altText={item.altText || item.title} />
+                            </div>
+                        </div>
+                    )}
+                </FadeIn>
+            </div>
+        ))}
+    </div>
+    <div class="text-center mt-12">
+        <FadeIn direction="up" delay="0.2s">
+            <Button className="px-8 py-6 shadow-lg bg-accent text-accent-cont rounded-none w-full md:w-auto md:min-w-96 text-xl hover:bg-accent/80">
+                <a href="#apply" class="w-full">お申込みはこちら</a>
+            </Button>
+        </FadeIn>
+    </div>
+</div>

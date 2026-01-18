@@ -1,0 +1,15 @@
+<!-- CardHeaderコンポーネントのエクスポート -->
+---
+interface CardHeaderProps {
+  class?: string;
+}
+
+const { class: className = '', ...rest } = Astro.props;
+---
+
+<div
+  class={`bg-gradient-to-r from-[#1C5A97] to-[#1C5A97]/70 text-main-cont rounded py-6 text-lg font-bold text-center mb-2 ${className}`.trim()}
+  {...rest}
+>
+  <slot />
+</div>

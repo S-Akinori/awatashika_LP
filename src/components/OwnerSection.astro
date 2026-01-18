@@ -1,0 +1,50 @@
+---
+import FadeIn from "./FadeIn.astro";
+import SectionWrapper from "./SectionWrapper.astro";
+import top from '../assets/top.png';
+
+const response = await fetch(import.meta.env.CMS_ENDPOINT+'?sheet=owner');
+const data = await response.json();
+const owner = data['owner']?.[0] || {};
+---
+
+<div id="owner" class="py-12 bg-cover bg-center bg-no-repeat" style={`background-image: url(${top.src})`}>
+    <SectionWrapper>
+        <div class="md:flex">
+            <div class="md:w-1/2 md:-mr-4 md:-mt-4 flex justify-center items-center relative">
+                <FadeIn direction="right" delay="0.2s">
+                    <img src={owner.image} alt={owner.name} class="max-w-full h-auto" />
+                </FadeIn>
+            </div>
+            <div class="md:w-1/2 md:-ml-4 md:-mb-4">
+                <FadeIn direction="left" delay="0.2s">
+                    <div class='p-4 md:p-8 md:pl-12 bg-white h-full'>
+                        <div class="pb-8 border-b border-main">
+                            <div class=''>
+                                <h2 class="text-3xl mb-2">{owner.name}</h2>
+                                <div class="whitespace-pre-wrap">
+                                    {owner.info}
+                                </div>
+                            </div>
+                            <p class="mt-8 whitespace-pre-wrap">
+                                {owner.text}
+                            </p>
+                        </div>
+                        <div class="pt-8 whitespace-pre-wrap">
+                            {owner.sub_text}
+                        </div>
+                    </div>
+                </FadeIn>
+            </div>
+        </div>
+        <div class="mt-12 max-w-lg w-full mx-auto items-center aspect-video">
+            <iframe
+                class="w-full h-full"
+                src={owner.video}
+                title="YouTube video player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
+            >
+            </iframe>
+        </div>
+    </SectionWrapper>
+</div>

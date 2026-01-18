@@ -1,0 +1,26 @@
+---
+import FadeIn from './FadeIn.astro';
+const response = await fetch(import.meta.env.CMS_ENDPOINT+'?sheet=message');
+const data = await response.json();
+const message = data.message[0];
+---
+
+<div id='message' class="md:flex">
+    <div class="md:w-1/2 md:-mr-4 md:-mb-4">
+        <div class='p-8 border-main border-2 relative h-full'>
+            <FadeIn>
+                <div class='inline-block absolute left-0 -top-12'>
+                    <h2 class="text-xl bg-white">{message.title}</h2>
+                </div>
+            </FadeIn>
+            <FadeIn>
+                <p class="mt-8">{message.text}</p>
+            </FadeIn>
+        </div>
+    </div>
+    <div class="md:w-1/2 md:-ml-4 md:-mt-4 flex justify-center items-center relative">
+        <FadeIn direction='left'>
+            <img src={message.image} alt={message.title} class="max-w-full h-auto" />
+        </FadeIn>
+    </div>
+</div>

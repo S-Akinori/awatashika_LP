@@ -1,11 +1,36 @@
 ---
 import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import Header from '@/components/Header.tsx';
+import "../styles/global.css";
+import FV from '@/components/FV.astro';
+import MessageSection from '@/components/MessageSection.astro';
+import SectionWrapper from '@/components/SectionWrapper.astro';
+import FeatureSection from '@/components/FeatureSection.astro';
+import DetailSection from '@/components/DetailSection.astro';
+import ReviewSection from '@/components/ReviewSection.astro';
+import OwnerSection from '@/components/OwnerSection.astro';
+import ApplySection from '@/components/ApplySection.astro';
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout>
-	<Welcome />
+	<Header client:load />
+	<FV />
+	<SectionWrapper>
+		<MessageSection />
+	</SectionWrapper>
+	<FeatureSection />
+	<SectionWrapper>
+		<DetailSection />
+	</SectionWrapper>
+	<SectionWrapper>
+		<ReviewSection />
+	</SectionWrapper>
+	<OwnerSection />
+	<SectionWrapper>
+		<ApplySection />
+	</SectionWrapper>
 </Layout>

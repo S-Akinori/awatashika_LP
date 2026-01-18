@@ -1,0 +1,15 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<div
+  class={`p-8 relative mx-auto before:absolute before:content-[''] before:left-0 before:top-0 before:h-1/2 before:aspect-square before:block before:border-l before:border-t before:border-main after:absolute after:content-[''] after:right-0 after:bottom-0 after:h-1/2 after:aspect-square after:block after:border-r after:border-b after:border-main ${className}`.trim()}
+>
+  <h2 class="text-xl text-main text-center">
+    <slot />
+  </h2>
+</div>

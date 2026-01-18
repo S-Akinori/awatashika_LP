@@ -1,0 +1,15 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = '', ...rest } = Astro.props;
+---
+
+<!-- Cardコンポーネント -->
+<div
+  class={`bg-white shadow-md rounded-lg m-4 ${className}`.trim()}
+  {...rest}
+>
+  <slot />
+</div>
