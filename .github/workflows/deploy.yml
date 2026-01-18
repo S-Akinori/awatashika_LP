@@ -7,6 +7,9 @@ on:
     branches: [ main ] # メインブランチにプッシュされた時に実行
   workflow_dispatch: # 手動実行も可能
 
+env:
+  CMS_ENDPOINT: ${{secrets.CMS_ENDPOINT}}
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
