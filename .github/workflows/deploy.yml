@@ -38,7 +38,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/ # Astroのデフォルトビルド出力ディレクトリ
-          server-dir: ${{ secrets.FTP_SERVER_DIR }}subdirectory/ # base パスを含めたディレクトリパス
+          server-dir: / # base パスを含めたディレクトリパス
           dangerous-clean-slate: false # 差分デプロイの有効化
           state-name: .ftp-deploy-sync-state.json # 同期状態ファイル
           exclude: |
