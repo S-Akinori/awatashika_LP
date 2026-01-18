@@ -1,6 +1,8 @@
 name: Build and Deploy Astro Site
 
 on:
+  repository_dispatch:
+    types: [spreadsheet_update] # GASからの通知を受け取るトリガー
   push:
     branches: [ main ] # メインブランチにプッシュされた時に実行
   workflow_dispatch: # 手動実行も可能
