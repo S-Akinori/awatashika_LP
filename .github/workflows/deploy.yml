@@ -1,0 +1,48 @@
+name: Build and Deploy Astro Site
+
+on:
+  repository_dispatch:
+    types: [spreadsheet_update] # GASからの通知を受け取るトリガー
+  push:
+    branches: [ main ] # メインブランチにプッシュされた時に実行
+  workflow_dispatch: # 手動実行も可能
+
+env:
+  CMS_ENDPOINT: ${{secrets.CMS_ENDPOINT}}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Astro 5.x は Node.js 18.14.1 以上が必要
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build Astro site
+        run: npm run build
+        env:
+          NODE_ENV: production
+      - name: Deploy to FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/ # Astroのデフォルトビルド出力ディレクトリ
+          server-dir: / # base パスを含めたディレクトリパス
+          dangerous-clean-slate: false # 差分デプロイの有効化
+          state-name: .ftp-deploy-sync-state.json # 同期状態ファイル
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            .ftp-deploy-sync-state.json
